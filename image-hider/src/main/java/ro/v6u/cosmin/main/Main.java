@@ -11,8 +11,8 @@ public class Main {
 
     static void printHelp() {
         System.out.println("Usage: "
-                + System.lineSeparator() + ">java -jar split-file.jar reveal fileName separator "
-                + System.lineSeparator() + ">java -jar split-file.jar hide imageName fileName separator "
+                + System.lineSeparator() + ">java -jar image-hider.jar reveal fileName separator "
+                + System.lineSeparator() + ">java -jar image-hider.jar hide imageName fileName separator "
                 + System.lineSeparator() + "'separator' must be complex enough (min 5 chars) and 'file' should be archived");
     }
 
