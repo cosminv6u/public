@@ -1,0 +1,9 @@
+.idea
+jmsmon.iml
+/palindromeapp/target
+/palindromeapp/palindromeapp.iml
+/test-spark/test-spark.iml
+/test-spark/.idea
+/test-spark/target
+/kinder-app/kinder-app.iml
+/kinder-app/.idea

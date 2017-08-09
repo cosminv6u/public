@@ -1,0 +1,346 @@
+<html>
+<head>
+	<link rel="stylesheet" type="text/css" href="normalize.css">
+	<script>
+		window.onload = function() {
+			var selectStreams = document.getElementById('selectType');
+			createAndAddOption(selectStreams, '', '');
+
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					var jsonTxt = this.responseText;
+					var json = JSON.parse(jsonTxt);
+					initialDetailsEndpoint = json.detailsEndpoint;
+					var rows = json.rows;
+					rows.forEach(function(element) {
+						createAndAddOption(selectStreams, element.index, element.value);
+					});
+				}
+			};
+
+			xhttp.open('GET', 'http://localhost:1234/getkindertypes', true);
+			xhttp.send();
+
+			populateYears();
+		}
+
+		function createAndAddOption(select, value, text) {
+			var option = document.createElement('option');
+			option.text = text;
+			option.value = value;
+			select.add(option);
+		}
+
+		function populateYears() {
+			var firstYear = 1990;
+			var currentYear = new Date().getFullYear();
+			var selectSser = document.getElementById('sser');
+			createAndAddOption(selectSser, '', '');
+
+			var i = 1;
+			while (firstYear <= currentYear) {
+				createAndAddOption(selectSser, currentYear + ' - ' + (currentYear + 1), currentYear + ' - ' + (currentYear + 1));
+				i = i + 1;
+				currentYear = currentYear - 1;
+			}
+		}
+
+		function submit() {
+			var selectType = document.getElementById('selectType');
+			var selectSser = document.getElementById('sser');
+			var selectSsur = document.getElementById('ssur');
+			var result = document.getElementById('result');
+			result.innerHTML = '';
+
+			if (!selectType.value) {
+				result.innerHTML = '<p>Select Egg Type!</p>';
+				return;
+			}
+			if (selectSser.value) {
+				callSelectSeries(selectType.value, selectSser.value);
+				return;
+			}
+			if (selectSsur.value) {
+				callSelectSurprise(selectType.value, selectSsur.value);
+				return;
+			}
+			result.innerHTML = '<p>Fill either: Search Series by Year or Search Surprise by Code!</p>';
+		}
+
+		function callSelectSeries(type, year) {
+			var resultDiv = document.getElementById('result');
+			var html = '';
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					var jsonTxt = this.responseText;
+					console.info('jsonTxt ' + jsonTxt);
+					if (jsonTxt.indexOf('{') == -1) {
+						resultDiv.innerHTML = '<p>' + jsonTxt + '</p>';
+						return;
+					}
+					var json = JSON.parse(jsonTxt);
+					var rows = json.rows;
+					for (var i in rows) {
+						var fields = rows[i].fields;
+						for (var j in fields) {
+							html = html + '<span style="font-weight: bold; font-size: 1.1em;">' + 
+								   fields[j].label + ': </span><pre>' + fields[j].value + '</pre>';
+						}
+						html = html + '<hr/>';
+					}
+					resultDiv.innerHTML = html;
+				}
+			};
+
+			var url = 'http://localhost:1234/getkinderseries/' + year + '/' + type;
+			console.info('url ' + url);
+			xhttp.open('GET', url, true);
+			xhttp.send();
+		}
+
+		function callSelectSurprise(type, code) {
+			var resultDiv = document.getElementById('result');
+			var html = '';
+			var xhttp = new XMLHttpRequest();
+			xhttp.onreadystatechange = function() {
+				if (this.readyState == 4 && this.status == 200) {
+					var jsonTxt = this.responseText;
+					if (jsonTxt.indexOf('{') == -1) {
+						resultDiv.innerHTML = '<p>' + jsonTxt + '</p>';
+						return;
+					}
+					var json = JSON.parse(jsonTxt);
+					var fields = json.fields;
+					for (var i in fields) {
+						html = html + '<span style="font-weight: bold; font-size: 1.1em;">' + fields[i].label + ': </span><pre>' + fields[i].value + '</pre>';
+					}
+					resultDiv.innerHTML = html;
+				}
+			};
+
+			xhttp.open('GET', 'http://localhost:1234/getkindersurprise/' + code.toUpperCase() + '/' + type, true);
+			xhttp.send();
+		}
+
+		function toggleDoc() {
+			console.info('toggleDoc: entered function');
+			var doc = document.getElementById('doc');
+			console.info('toggleDoc: doc ' + doc);
+			doc.style.display == 'none' ? doc.style.display = 'block' : doc.style.display = 'none';
+			console.info('toggleDoc: doc.style.display ' + doc.style.display);
+		}
+	</script>
+</head>
+<body>
+	<label for="selectType">Select Egg Type</label>
+	<select id="selectType"></select><br/>
+	<label for="sser">Search Series by Year</label>
+	<select id="sser"></select>
+	<span style="padding: 30px;">or</span>
+	<label for="ssur">Search Surprise by Code</label>
+	<input type="text" id="ssur" value="" placeholder="Example: FF261"/><br/>
+	<button onclick="submit()">Ok</button>
+	<div id="result"></div>
+	<br/><br/><br/>
+	<div style="cursor: pointer; font-weight: bold;" onclick="toggleDoc()">Documentation: (click me)</div><br/>
+		<div id="doc" style="display: none;">
+			<p>Get Kinder Surprise Types</p>
+			<a href="http://localhost:1234/getkindertypes">http://localhost:1234/getkindertypes</a>
+			<pre>
+{
+   "rows":[
+	  {
+		 "index":"1",
+		 "value":"Kinder Surprise Boys"
+	  },
+	  {
+		 "index":"2",
+		 "value":"Kinder Surprise Girls"
+	  },
+	  {
+		 "index":"3",
+		 "value":"Kinder Joy Boys"
+	  },
+	  {
+		 "index":"4",
+		 "value":"Kinder Joy Girls"
+	  },
+	  {
+		 "index":"5",
+		 "value":"Kinder Maxi Boys"
+	  },
+	  {
+		 "index":"6",
+		 "value":"Kinder Maxi Girls"
+	  },
+	  {
+		 "index":"7",
+		 "value":"Miscellaneous"
+	  }
+   ]
+}
+			</pre>
+			<hr/>
+			<p>Get All Series By Year JSON:</p>
+			<a href="http://localhost:1234/getkinderseries/20142015/1">http://localhost:1234/getkinderseries/:yearyear+1/:type</a>
+			<pre>
+{
+   "rows":[
+      {
+         "index":"1",
+         "fields":[
+            {
+               "index":"1",
+               "label":"Code",
+               "value":"FF261 à FF274 et FF299"
+            },
+            {
+               "index":"2",
+               "label":"Name",
+               "value":"Anniversaire Spécial 40 ans"
+            },
+            {
+               "index":"3",
+               "label":"Type",
+               "value":"Kinder Surprise Boys"
+            },
+            {
+               "index":"4",
+               "label":"Series Type",
+               "value":"Séries Principales"
+            }
+         ]
+      },
+      {
+         "index":"2",
+         "fields":[
+            {
+               "index":"1",
+               "label":"Code",
+               "value":"FF001 à FF004"
+            },
+            {
+               "index":"2",
+               "label":"Name",
+               "value":"Animaux"
+            },
+            {
+               "index":"3",
+               "label":"Type",
+               "value":"Kinder Surprise Boys"
+            },
+            {
+               "index":"5",
+               "label":"Picture",
+               "value":"base64"
+            }
+         ]
+      },
+      {
+         "index":"3",
+         "fields":[
+            {
+               "index":"1",
+               "label":"Code",
+               "value":"FF275 à FF283"
+            },
+            {
+               "index":"2",
+               "label":"Name",
+               "value":"Noël"
+            },
+            {
+               "index":"3",
+               "label":"Type",
+               "value":"Kinder Surprise Boys"
+            },
+            {
+               "index":"5",
+               "label":"Picture",
+               "value":"base64"
+            }
+         ]
+      }
+   ]
+}
+			</pre>
+			<hr/>
+			<p>Get Single Surprise By Code (along with series detail) JSON:</p>
+			<a href="http://localhost:1234/getkindersurprise/FF261/1">http://localhost:1234/getkindersurprise/:code/:type</a>
+			<pre>
+{
+   "fields":[
+      {
+         "index":"1",
+         "label":"Code",
+         "value":"FF261"
+      },
+      {
+         "index":"2",
+         "label":"Surprise",
+         "value":"Alex"
+      },
+      {
+         "index":"3",
+         "label":"Numéro",
+         "value":"Inscrit sur la tasse"
+      },
+      {
+         "index":"4",
+         "label":"Nombre de pièces",
+         "value":"Monobloc"
+      },
+      {
+         "index":"5",
+         "label":"Autocollants1",
+         "value":"base64"
+      },
+      {
+         "index":"6",
+         "label":"Autocollants2",
+         "value":"base64"
+      },
+      {
+         "index":"7",
+         "label":"Picture",
+         "value":"base64"
+      },
+      {
+         "index":"8",
+         "label":"Paper Picture",
+         "value":"base64"
+      },
+      {
+         "index":"9",
+         "label":"Series Code",
+         "value":"FF261 à FF274 et FF299"
+      },
+      {
+         "index":"10",
+         "label":"Series Name",
+         "value":"Série spéciale 40 ans"
+      },
+      {
+         "index":"11",
+         "label":"Série",
+         "value":"FF"
+      },
+      {
+         "index":"12",
+         "label":"Année",
+         "value":"2014 - 2015"
+      },
+      {
+         "index":"13",
+         "label":"Particularité",
+         "value":"Pas de FF262\nFF265 brille dans le noir\nFF274 crache de l'eau"
+      }
+   ]
+}
+			</pre>
+		</div>
+	</div>
+</body>
+</html>
