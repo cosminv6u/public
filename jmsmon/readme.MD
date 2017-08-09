@@ -1,6 +1,6 @@
 ## Weblogic JMS Monitoring Tool
 
-This project is pure Java SE that can be used as a starting point for a full web application (with Spring, Angular) that manages the JMS Messages within Weblogic Queues using JMX.
+This project is pure Java SE that can be used as a starting point for a full web application (with Spring, Angular) that manages the JMS Messages within Weblogic Queues using **JMX**.
 
 ## Motivation
 
@@ -9,7 +9,7 @@ When the JMS fails after a configured number of retries the JMS Message will end
 
 ## Description
 
-It can connect either directly to a Weblogic Managed Server or to a Weblogic Admin Server from which it can read data from all its Managed Servers.
+It can connect **remotely** either directly to a Weblogic **Managed Server** or to a Weblogic **Admin Server** from which it can read data from all its Managed Servers.
 
 ## Installation
 
@@ -18,13 +18,13 @@ The Jar can be build with Maven. Tested with Java 7.
 
 mvn install
 
-To run the application you need to Run the Main class with some properties:
+To run the application you need to Run the **Main** class with some properties:
 
 -Dhost=localhost
 -Dport=7001
 -Duser=weblogic
 -Dpass=Password1
--DisAdmin=true // if you connect to AdminServer (and get info from all ManagedServers) or directly to a specific ManagedServer
+-DisAdmin=true // if you connect to AdminServer
 -Dprotocol=iiop // optional, defaults to t3
 
 ## API Reference
@@ -41,15 +41,15 @@ There are 5 operations
 ## TODO
 
 - this is a POC that can a starting point for a Spring Application and expose JSON API and AngularJS UI
-- while creating the Spring App, make sure you put @Transactional so that 2 different clients won't bother each other
+- while creating the Spring App, make sure you put **@Transactional** so that 2 different clients won't bother each other
 - also take care of Thread Safety if you see some areas where there might be problems
 - when working directly with ManagedServers (instead of via AdminServer) you can change the code to work with a configurable LIST of SERVERS that you can read from the database instead of 1 single server
 - create Unit & Integration Tests
-- implement/test Topics as well (with durable subscribers)
-- test in Cluster Environment with Distributed Queues (should work out of the box)
-- in Development Weblogic has loose security constraints, in Production maybe you need to forbid access to JMX, except the specific MBeans and Operations needed by this JMS Monitoring Tool, you can configure Policies for that
-- you can extend the functionality to WildFly and other servers as well!
-- when deployed within the Weblogic, the 5 weblogic JARS don't need to and shouldn't be packed with the application
+- implement/test **Topics** as well (with **durable subscribers**)
+- test in **Cluster Environment with Distributed Queues** (should work out of the box)
+- in Development Weblogic has loose security constraints, in **Production** maybe you need to forbid access to JMX, except the specific MBeans and Operations needed by this JMS Monitoring Tool, you can configure **Policies** for that
+- you can extend the functionality to **WildFly** and other servers as well!
+- when deployed within the Weblogic, the **5 weblogic JARS** don't need to and shouldn't be packed with the application
 - when deployed within the Weblogic, via JNDI you could take the JMX Connection details: host, port, servername (except user/pass): not implemented yet. So you don't need to provide the URL
 
 ## Tests
