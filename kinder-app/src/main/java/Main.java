@@ -51,6 +51,10 @@ public class Main {
 
             return KinderService.getAllSeriesForYearAndType(year, KinderType.getById(typeId));
         });
+
+		get("/", (req, res) -> {
+			return Simulator.getHtmlContent("kinder.html");
+		});
     }
 
 }
