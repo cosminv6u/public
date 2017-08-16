@@ -1,0 +1,6 @@
+filter {
+	mutate { #used for XML filter plugin because the XPath returns an array even if 1 single result matched
+		join => [ "some_field", "", 
+				  "some_other_field", "" ]
+	}
+}

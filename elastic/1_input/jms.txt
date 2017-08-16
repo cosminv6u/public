@@ -1,0 +1,10 @@
+input {
+	jms { #this is not standard plugin, needs to be installed separately
+		use_jms_timestamp => false
+		yaml_file => "jms.yml" #this is a file with extra configuration that needs to exist
+		yaml_section => "weblogic"
+		destination => "ecpJMSServer/ecpJMSModule!destinationName"
+		#pub_sub => true #for topics these 2 lines are mandatory
+		#runner => "thread"
+	}
+}

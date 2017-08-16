@@ -1,0 +1,14 @@
+filter {
+	ruby { #executes arbitrary Ruby code, this code will pretty print an XML field
+		code => "
+			require 'rexml/document'
+			source = event.get('sourceField')
+			doc = REXML::Document.new(source)
+			formatter = REXML::Formatters::Pretty.new
+			formatter.compact = true
+			target = ''
+			formatter.write(doc, target)
+			event.set('targetField', target) #sourceField and targetField can be the same and it will be overriden
+			"
+	}
+}

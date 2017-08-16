@@ -1,0 +1,7 @@
+filter { #patterns should be previously declared
+	grok { #parses using REGEX the field into multiple fields: %{REGEX_REFERENCE:newFieldToBeGenerated}
+		match => { 
+			"message" => [ "%{LOG_LEVEL:loglevel} %{HIBERNATE_DATE_TIME:datetime_string} %{THREAD:thread} %{LOCATION_CLASS:locationClass}#%{LOCATION_METHOD:locationMethod}:%{LOCATION_LINE_NUMBER:locationLineNumber} -(?<message>.*)" ]
+		} #(?<field>someRegex) #will generate a new field for the matching regex (when writing the REGEX inline instead of via REGEX_REFERENCE)
+	}
+}

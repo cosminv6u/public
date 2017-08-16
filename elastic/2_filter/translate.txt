@@ -1,0 +1,9 @@
+filter {
+	translate { #this is not standard plugin, needs to be installed separately
+		field => "path"
+		destination => "target_field"
+		dictionary => [ "RO", "Romania", #like a map, maps a value to another value
+						"BE", "Belgium" ]
+		remove_field => [ "path" ] #remove_field can be put on any filter plugin
+	}
+}

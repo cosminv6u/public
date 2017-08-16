@@ -1,0 +1,14 @@
+input {
+	http_poller { #the response will generate just one event
+		urls => { #you can have multiple URLs
+			test1 => {
+				method => get
+				user => "username" #basic auth
+				password => "password"
+				url => "http://hostname.com"
+			}
+		}
+		request_timeout => 60	#if the http request doesn't respond after x seconds
+		schedule => { cron => "* * * * *"}
+	}
+}

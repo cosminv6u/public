@@ -1,0 +1,19 @@
+YEAR [0-9]{4}
+MONTHNUM (?:0?[1-9]|1[0-2])
+MONTHDAY (?:(?:0[1-9])|(?:[12][0-9])|(?:3[01])|[1-9])
+DATE %{YEAR }[/-]%{MONTHNUM}[/-]%{MONTHDAY}
+
+HOUR (?:2[0123]|[01]?[0-9])
+MINUTE (?:[0-5][0-9])
+SECOND (?:(?:[0-5]?[0-9]|60)(?:[:.,][0-9]+)?)
+TIME (?!<[0-9])%{HOUR}:%{MINUTE}(?::%{SECOND})(?![0-9])
+
+LOG_LEVEL (INFO|DEBUG|ERROR)
+LOCATION_CLASS your.package.name[a-zA-Z.]+
+LOCATION_METHOD [a-zA-Z]+
+LOCATION_LINE_NUMBER [0-9]+
+LOCATION %{LOCATION_CLASS}#%{LOCATION_METHOD}:%{LOCATION_LINE_NUMBER}
+
+THREAD (?:\[[^\]]+\]|\[\[ACTIVE\][^\]]+\])
+
+DATE_TIME %{DATE} %{TIME}

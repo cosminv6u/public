@@ -1,0 +1,6 @@
+filter {
+	date {
+		match => [ "datetime_string" , "yyyy-MM-dd HH:mm:ss,SSS" ] #converts a string to a date, ?if it doesn't exist takes current datetime?
+		target => "datetime"
+	}
+}

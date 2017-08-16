@@ -1,0 +1,6 @@
+output {
+	stdout { 
+		codec => rubydebug #standard ruby debug format
+	}
+	#you can have more than one output plugin
+}

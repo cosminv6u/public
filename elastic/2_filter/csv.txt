@@ -1,0 +1,9 @@
+filter {
+	csv {
+		columns => [ "col1" , "col2" , "col3" ]
+		convert => {
+			"col1" => "integer"
+		}
+		remove_field => [ "message" ] #if you don't want to keep the initial col1,col2,col3 field
+	}
+}

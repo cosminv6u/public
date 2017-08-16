@@ -1,0 +1,9 @@
+filter {
+	xml { #parses an XML with XPath
+		source => "some_xml_field"
+		xpath => [ "//Element1/text()", "element1_target_field" , # use another filter mutate.join to collapse the 1 element array into one single value
+				   "//Element2/text()", "element2_target_field" ]
+		remove_namespaces => true
+		store_xml => false
+	}
+}

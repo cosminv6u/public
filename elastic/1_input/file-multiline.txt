@@ -1,0 +1,13 @@
+input {
+	file {
+		path => ["C:/somepath/*.log"] #?syntax?
+		start_position => "beginning" #you can also say you want to track only new data from the end, instead of from the beginning
+		codec => multiline { #useful for Stacktraces or SQLs
+					auto_flush_interval => 1 #if after 1 second the separator doesn't appear it will flush, for the last line in the file
+					patterns_dir => "C:/somepath/patterns"
+					pattern => "^%{LOG_LEVEL} "
+					negate => true
+					what => previous
+				}
+	}
+}

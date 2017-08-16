@@ -1,0 +1,9 @@
+input {
+	tcp {
+		host => "localhost"
+		port => 1234
+		codec => json {
+					charset => "UTF-8" #default is ASCII
+				}
+	}
+}

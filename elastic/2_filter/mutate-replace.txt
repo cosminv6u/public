@@ -1,0 +1,5 @@
+filter {
+	mutate{
+		replace => {  "message" => "<sample><xml><a>aaa</a></xml></sample>" }
+	}
+}

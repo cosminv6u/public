@@ -1,0 +1,12 @@
+weblogic:
+  :jndi_name: jms/JndiOfConnectionFactory
+  :jndi_context:
+    java.naming.factory.initial: weblogic.jndi.WLInitialContextFactory 
+    java.naming.provider.url: t3://localhost:7001
+    java.naming.factory.url.pkgs: javax.naming:javax.jms
+    java.naming.security.principal: weblogic
+    java.naming.security.credentials: weblogic12345
+  :require_jars:
+    - C:/Oracle/Middleware/wlserver/server/lib/wlthint3client.jar
+    - C:/Oracle/Middleware/wlserver/server/lib/wljmsclient.jar
+    - C:/Oracle/Middleware/wlserver/server/lib/wlclient.jar 
